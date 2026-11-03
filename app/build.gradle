@@ -1,0 +1,26 @@
+plugins { id 'com.android.application' }
+android {
+    namespace 'oro.texteditor'
+    compileSdk 34
+    defaultConfig {
+        applicationId 'oro.texteditor'
+        minSdk 28
+        targetSdk 30
+        versionCode 1
+        versionName '0.0001'
+    }
+    def ks = System.getenv('SIGNING_KEYSTORE')
+    signingConfigs {
+        oro {
+            if (ks) {
+                storeFile file(ks)
+                storePassword System.getenv('SIGNING_PASSWORD')
+                keyAlias 'textoro'
+                keyPassword System.getenv('SIGNING_PASSWORD')
+            }
+        }
+    }
+    buildTypes { debug { if (ks) signingConfig signingConfigs.oro } }
+    lint { abortOnError false; checkReleaseBuilds false }
+    compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+}
